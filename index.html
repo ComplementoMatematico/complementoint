@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Repaso Control 4</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+<style>
+:root{
+  --bg:#fbfaf7; --surface:#ffffff; --ink:#1f2328; --muted:#5b6370; --line:#e3e0d8;
+  --accent:#1d5fa8; --accent-soft:#e8f0fa; --warn:#a4451c; --warn-soft:#fbede6;
+  --ok:#2c7a4b; --ok-soft:#e7f4ec;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --surface:#1e2127; --ink:#e7e9ec; --muted:#a2a9b4; --line:#30343c;
+    --accent:#7fb2ec; --accent-soft:#1f2b3b; --warn:#f0a07a; --warn-soft:#3a261d;
+    --ok:#79c99a; --ok-soft:#1c3226;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --surface:#1e2127; --ink:#e7e9ec; --muted:#a2a9b4; --line:#30343c;
+  --accent:#7fb2ec; --accent-soft:#1f2b3b; --warn:#f0a07a; --warn-soft:#3a261d;
+  --ok:#79c99a; --ok-soft:#1c3226;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:24px 16px 80px}
+header h1{font-size:1.9rem;margin:.2em 0 .1em;line-height:1.2}
+header p{color:var(--muted);margin:.2em 0}
+nav.toc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 18px;margin:20px 0}
+nav.toc ol{margin:.3em 0;padding-left:1.3em}
+nav.toc a{color:var(--accent);text-decoration:none}
+nav.toc a:hover{text-decoration:underline}
+section{margin-top:44px}
+h2{font-size:1.4rem;border-bottom:2px solid var(--line);padding-bottom:6px;margin-bottom:12px}
+h3{font-size:1.1rem;margin:22px 0 6px}
+.box{border-radius:10px;padding:12px 16px;margin:14px 0;border:1px solid var(--line);background:var(--surface)}
+.key{border-left:4px solid var(--accent);background:var(--accent-soft)}
+.warn{border-left:4px solid var(--warn);background:var(--warn-soft)}
+.ok{border-left:4px solid var(--ok);background:var(--ok-soft)}
+.box b.t{display:block;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;margin:10px 0;background:var(--surface)}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:middle}
+th{background:var(--accent-soft)}
+.tablewrap{overflow-x:auto}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:10px 14px}
+details summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:8px}
+.ex{counter-increment:ex}
+.muted{color:var(--muted)}
+.steps li{margin:4px 0}
+footer{margin-top:60px;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+<h1>Repaso para el Control 4 · Matemáticas 2</h1>
+<p>De las reglas de derivación hasta la integral definida y el Teorema Fundamental del Cálculo.</p>
+<p class="muted">Temario: (1) integrales definidas con primitivas y Regla de Barrow, (2) derivar funciones definidas por integrales (TFC + regla de la cadena), (3) evaluar esas funciones y sus derivadas.</p>
+</header>
+
+<nav class="toc">
+<b>Contenido</b>
+<ol>
+<li><a href="#derivadas">Derivadas: tabla y propiedades</a></li>
+<li><a href="#primitivas">Primitivas (integral indefinida)</a></li>
+<li><a href="#trig">Trucos trigonométricos útiles</a></li>
+<li><a href="#definida">Integral definida y sus propiedades</a></li>
+<li><a href="#barrow">Regla de Barrow</a></li>
+<li><a href="#tfc">Teorema Fundamental del Cálculo</a></li>
+<li><a href="#evaluar">Evaluar F(a), F'(a) y recta tangente</a></li>
+<li><a href="#tvm">Valor promedio (TVM para integrales)</a></li>
+<li><a href="#errores">Errores frecuentes</a></li>
+<li><a href="#practica">Ejercicios tipo control (con solución)</a></li>
+</ol>
+</nav>
+
+<!-- ============================================ -->
+<section id="derivadas">
+<h2>1. Derivadas: tabla y propiedades</h2>
+
+<p>Integrar es "derivar al revés", así que todo parte por saber derivar bien.</p>
+
+<h3>Tabla básica</h3>
+<div class="tablewrap"><table>
+<tr><th>Función \(f(x)\)</th><th>Derivada \(f'(x)\)</th></tr>
+<tr><td>\(c\) (constante)</td><td>\(0\)</td></tr>
+<tr><td>\(x^n\)</td><td>\(n\,x^{n-1}\)</td></tr>
+<tr><td>\(\sqrt{x}=x^{1/2}\)</td><td>\(\dfrac{1}{2\sqrt x}\)</td></tr>
+<tr><td>\(\operatorname{sen}x\)</td><td>\(\cos x\)</td></tr>
+<tr><td>\(\cos x\)</td><td>\(-\operatorname{sen}x\)</td></tr>
+<tr><td>\(\tan x\)</td><td>\(\sec^2 x=\dfrac{1}{\cos^2x}\)</td></tr>
+<tr><td>\(\sec x\)</td><td>\(\sec x\tan x=\dfrac{\operatorname{sen}x}{\cos^2x}\)</td></tr>
+<tr><td>\(e^x\)</td><td>\(e^x\)</td></tr>
+<tr><td>\(\ln x\)</td><td>\(\dfrac1x\)</td></tr>
+</table></div>
+
+<h3>Propiedades (reglas)</h3>
+<div class="tablewrap"><table>
+<tr><th>Regla</th><th>Fórmula</th></tr>
+<tr><td>Suma</td><td>\((f+g)'=f'+g'\)</td></tr>
+<tr><td>Constante por función</td><td>\((c\,f)'=c\,f'\)</td></tr>
+<tr><td>Producto</td><td>\((f\,g)'=f'g+f\,g'\)</td></tr>
+<tr><td>Cociente</td><td>\(\left(\dfrac fg\right)'=\dfrac{f'g-f\,g'}{g^2}\)</td></tr>
+<tr><td><b>Cadena</b></td><td>\(\big(f(g(x))\big)'=f'(g(x))\cdot g'(x)\)</td></tr>
+</table></div>
+
+<div class="box key"><b class="t">La regla de la cadena es LA clave del control</b>
+"Derivada de afuera evaluada en lo de adentro, por la derivada de lo de adentro".
+$$\big(\operatorname{sen}(x^2)\big)'=\cos(x^2)\cdot 2x,\qquad \big((3x+1)^5\big)'=5(3x+1)^4\cdot 3,\qquad \big(\sqrt{x^2+1}\big)'=\frac{2x}{2\sqrt{x^2+1}}.$$
+</div>
+
+<details><summary>Practica rápida: deriva \(h(x)=x^3\operatorname{sen}(2x)\)</summary>
+Producto + cadena: \(h'(x)=3x^2\operatorname{sen}(2x)+x^3\cos(2x)\cdot 2=3x^2\operatorname{sen}(2x)+2x^3\cos(2x)\).
+</details>
+</section>
+
+<!-- ============================================ -->
+<section id="primitivas">
+<h2>2. Primitivas (integral indefinida)</h2>
+
+<div class="box key"><b class="t">Definición</b>
+\(F\) es <b>primitiva</b> de \(f\) si \(F'(x)=f(x)\). Se escribe \(\displaystyle\int f(x)\,dx=F(x)+C\).
+<br>Siempre se puede comprobar: <b>derivo mi resultado y debo volver al integrando</b>.
+</div>
+
+<h3>Tabla básica de primitivas</h3>
+<div class="tablewrap"><table>
+<tr><th>\(f(x)\)</th><th>\(\int f(x)\,dx\)</th><th>Comentario</th></tr>
+<tr><td>\(k\)</td><td>\(kx+C\)</td><td></td></tr>
+<tr><td>\(x^n\) \((n\neq-1)\)</td><td>\(\dfrac{x^{n+1}}{n+1}+C\)</td><td>"sumo 1 al exponente y divido por el nuevo exponente"</td></tr>
+<tr><td>\(\dfrac1x\)</td><td>\(\ln|x|+C\)</td><td>el caso \(n=-1\)</td></tr>
+<tr><td>\(\cos x\)</td><td>\(\operatorname{sen}x+C\)</td><td></td></tr>
+<tr><td>\(\operatorname{sen}x\)</td><td>\(-\cos x+C\)</td><td>¡ojo con el signo!</td></tr>
+<tr><td>\(\sec^2x=\dfrac1{\cos^2x}\)</td><td>\(\tan x+C\)</td><td></td></tr>
+<tr><td>\(\sec x\tan x=\dfrac{\operatorname{sen}x}{\cos^2x}\)</td><td>\(\sec x+C\)</td><td></td></tr>
+<tr><td>\(e^x\)</td><td>\(e^x+C\)</td><td></td></tr>
+</table></div>
+
+<h3>Raíces y fracciones: pasarlas a potencia</h3>
+$$\sqrt[3]{x}=x^{1/3},\qquad \frac{1}{x^4}=x^{-4},\qquad \frac{1}{\sqrt{x}}=x^{-1/2},\qquad x\sqrt x=x^{3/2}.$$
+$$\int\frac{1}{\sqrt x}\,dx=\int x^{-1/2}dx=\frac{x^{1/2}}{1/2}+C=2\sqrt x+C.$$
+
+<h3>Linealidad</h3>
+$$\int\big(a f(x)+b g(x)\big)dx=a\int f(x)\,dx+b\int g(x)\,dx.$$
+<p>Si el integrando es un cociente con un solo término abajo, <b>separa</b>: \(\dfrac{x+1}{x^4}=x^{-3}+x^{-4}\), \(\dfrac{u^2+2u+1}{u}=u+2+\dfrac1u\).</p>
+
+<h3>Composiciones (la cadena "al revés")</h3>
+<div class="box key"><b class="t">Caso 1: argumento lineal \(ax+b\)</b>
+Se integra como siempre y se <b>divide por \(a\)</b>:
+$$\int\cos(3x)\,dx=\frac{\operatorname{sen}(3x)}{3}+C,\quad \int\operatorname{sen}(2x)\,dx=-\frac{\cos(2x)}{2}+C,\quad \int\sqrt{2x+4}\,dx=\frac{(2x+4)^{3/2}}{\tfrac32\cdot 2}+C.$$
+</div>
+<div class="box key"><b class="t">Caso 2: aparece \(g(x)^n\cdot g'(x)\)</b>
+$$\int g(x)^n\,g'(x)\,dx=\frac{g(x)^{n+1}}{n+1}+C.$$
+Ejemplo: \(\displaystyle\int 2x(x^2+1)^3dx=\frac{(x^2+1)^4}{4}+C\), porque \((x^2+1)'=2x\) está ahí.
+<br>Si falta una constante, se ajusta: \(\displaystyle\int x(x^2+1)^3dx=\frac12\int 2x(x^2+1)^3dx=\frac{(x^2+1)^4}{8}+C\).
+</div>
+</section>
+
+<!-- ============================================ -->
+<section id="trig">
+<h2>3. Trucos trigonométricos útiles</h2>
+<div class="tablewrap"><table>
+<tr><th>Identidad</th><th>Uso típico</th></tr>
+<tr><td>\(\operatorname{sen}(-x)=-\operatorname{sen}x,\ \ \cos(-x)=\cos x\)</td><td>simplificar \(\operatorname{sen}(-2x)\)</td></tr>
+<tr><td>\(\operatorname{sen}(x+\pi)=-\operatorname{sen}x,\ \ \cos(x-\pi)=-\cos x\)</td><td>sumar un múltiplo <b>impar</b> de \(\pi\) cambia el signo</td></tr>
+<tr><td>\(\operatorname{sen}(x+2\pi)=\operatorname{sen}x\)</td><td>sumar un múltiplo <b>par</b> de \(\pi\) no cambia nada</td></tr>
+<tr><td>\(\dfrac{\operatorname{sen}x+1}{\cos^2x}=\sec x\tan x+\sec^2x\)</td><td>separar fracciones con \(\cos^2\) abajo</td></tr>
+<tr><td>\(\cos^2x=\dfrac{1+\cos(2x)}{2}\)</td><td>integrar \(\cos^2 x\)</td></tr>
+</table></div>
+
+<h3>Valores que hay que saber de memoria</h3>
+<div class="tablewrap"><table>
+<tr><th>\(x\)</th><td>\(0\)</td><td>\(\pi/6\)</td><td>\(\pi/4\)</td><td>\(\pi/3\)</td><td>\(\pi/2\)</td><td>\(\pi\)</td></tr>
+<tr><th>\(\operatorname{sen}x\)</th><td>\(0\)</td><td>\(\tfrac12\)</td><td>\(\tfrac{\sqrt2}{2}\)</td><td>\(\tfrac{\sqrt3}{2}\)</td><td>\(1\)</td><td>\(0\)</td></tr>
+<tr><th>\(\cos x\)</th><td>\(1\)</td><td>\(\tfrac{\sqrt3}{2}\)</td><td>\(\tfrac{\sqrt2}{2}\)</td><td>\(\tfrac12\)</td><td>\(0\)</td><td>\(-1\)</td></tr>
+</table></div>
+<p class="muted">Además: \(\cos(k\pi)=(-1)^k\) y \(\operatorname{sen}(k\pi)=0\) para todo entero \(k\).</p>
+</section>
+
+<!-- ============================================ -->
+<section id="definida">
+<h2>4. Integral definida y sus propiedades</h2>
+
+<p>\(\displaystyle\int_a^b f(x)\,dx\) es un <b>número</b>: el área <b>con signo</b> entre la gráfica de \(f\) y el eje \(x\), desde \(a\) hasta \(b\). Lo que está sobre el eje suma, lo que está bajo el eje resta.</p>
+
+<div class="tablewrap"><table>
+<tr><th>Propiedad</th><th>Fórmula</th></tr>
+<tr><td>Límites iguales</td><td>\(\displaystyle\int_a^a f(x)\,dx=0\) &nbsp; <b>(muy usada en el control)</b></td></tr>
+<tr><td>Invertir límites</td><td>\(\displaystyle\int_b^a f=-\int_a^b f\)</td></tr>
+<tr><td>Linealidad</td><td>\(\displaystyle\int_a^b(\alpha f+\beta g)=\alpha\int_a^b f+\beta\int_a^b g\)</td></tr>
+<tr><td>Aditividad</td><td>\(\displaystyle\int_a^b f=\int_a^c f+\int_c^b f\)</td></tr>
+<tr><td>\(f\) impar, intervalo simétrico</td><td>\(\displaystyle\int_{-a}^a f=0\)</td></tr>
+<tr><td>\(f\) par, intervalo simétrico</td><td>\(\displaystyle\int_{-a}^a f=2\int_0^a f\)</td></tr>
+</table></div>
+
+<div class="box warn"><b class="t">La variable de integración es "muda"</b>
+\(\displaystyle\int_0^1 t^2dt=\int_0^1u^2du=\tfrac13\). Y dentro de \(\displaystyle\int_1^x t\,u\,du\), la \(t\) es <b>constante</b> (sale afuera): \(\displaystyle\int_1^x t\,u\,du=t\int_1^x u\,du\).
+</div>
+
+<div class="box"><b class="t">Valor absoluto y parte entera: separar en tramos</b>
+\(|3x-5|\) cambia de fórmula en \(x=\tfrac53\): se separa la integral ahí. \([x]\) es constante en cada \([k,k+1[\): la integral es suma de rectángulos.
+</div>
+</section>
+
+<!-- ============================================ -->
+<section id="barrow">
+<h2>5. Regla de Barrow</h2>
+<div class="box key"><b class="t">Regla de Barrow (2º TFC)</b>
+Si \(f\) es continua en \([a,b]\) y \(F\) es una primitiva de \(f\), entonces
+$$\int_a^b f(x)\,dx=F(x)\Big|_a^b=F(b)-F(a).$$
+(La constante \(C\) se cancela, por eso no se escribe.)
+</div>
+
+<h3>Receta</h3>
+<ol class="steps">
+<li>Reescribir el integrando: raíces → potencias, separar fracciones, simplificar trigonometría.</li>
+<li>Encontrar una primitiva término a término (tabla + linealidad + composición).</li>
+<li>Evaluar arriba menos abajo, <b>con paréntesis</b>.</li>
+<li>Simplificar.</li>
+</ol>
+
+<h3>Ejemplo resuelto</h3>
+$$\int_0^{\pi/4}\big(\operatorname{sen}(2x+7\pi)-\cos(3x-\pi)\big)dx$$
+<p>Como \(7\pi\) y \(\pi\) son múltiplos impares de \(\pi\): \(\operatorname{sen}(2x+7\pi)=-\operatorname{sen}(2x)\) y \(\cos(3x-\pi)=-\cos(3x)\). Entonces</p>
+$$\int_0^{\pi/4}\big(-\operatorname{sen}(2x)+\cos(3x)\big)dx=\left(\frac{\cos(2x)}{2}+\frac{\operatorname{sen}(3x)}{3}\right)\Big|_0^{\pi/4}=\left(0+\frac{\sqrt2}{6}\right)-\left(\frac12+0\right)=\frac{\sqrt2}{6}-\frac12.$$
+</section>
+
+<!-- ============================================ -->
+<section id="tfc">
+<h2>6. Teorema Fundamental del Cálculo (derivar una integral)</h2>
+
+<div class="box key"><b class="t">1º TFC</b>
+Si \(f\) es continua y \(\displaystyle F(x)=\int_a^x f(t)\,dt\), entonces \(F\) es derivable y
+$$F'(x)=f(x).$$
+"Derivar la integral = reemplazar \(t\) por \(x\) en el integrando".
+</div>
+
+<div class="box key"><b class="t">TFC generalizado (con regla de la cadena)</b>
+$$\frac{d}{dx}\int_a^{u(x)}f(t)\,dt=f\big(u(x)\big)\,u'(x)$$
+$$\frac{d}{dx}\int_{v(x)}^{u(x)}f(t)\,dt=f\big(u(x)\big)\,u'(x)-f\big(v(x)\big)\,v'(x)$$
+"Integrando evaluado en el límite de arriba por su derivada, <b>menos</b> integrando evaluado en el de abajo por su derivada".
+</div>
+
+<h3>Ejemplos</h3>
+$$\frac{d}{dx}\int_1^x t^2\,dt=x^2 \qquad\qquad \frac{d}{dx}\int_0^{x^2}\sqrt[3]{t^4+1}\,dt=\sqrt[3]{x^8+1}\cdot 2x$$
+$$\frac{d}{dx}\int_{2x+2}^{x^2+2x+1}\ln(t+1)\,dt=\ln(x^2+2x+2)\,(2x+2)-\ln(2x+3)\cdot 2$$
+
+<h3>Caso típico de control: factor afuera de la integral</h3>
+<p>Si \(G(x)=x^2\displaystyle\int_1^{x^2}f(t)\,dt\), es un <b>producto</b>: primero regla del producto, después TFC en la integral.</p>
+$$G'(x)=2x\int_1^{x^2}f(t)\,dt+x^2\cdot f(x^2)\cdot 2x.$$
+
+<div class="box warn"><b class="t">Si la \(x\) aparece dentro del integrando</b>
+Antes de derivar hay que <b>sacarla</b> de la integral (la variable de integración es \(t\)):
+$$\int_0^x\operatorname{sen}(x)\,f(t)\,dt=\operatorname{sen}(x)\int_0^x f(t)\,dt\quad\text{y luego producto + TFC.}$$
+</div>
+
+<h3>Integral dentro de integral</h3>
+<p>Con \(F(x)=\displaystyle\int_0^{x^2}\Big(\int_1^t g(u)\,du\Big)dt\): llamamos \(h(t)=\int_1^t g(u)\,du\) (se calcula con Barrow). Entonces \(F'(x)=h(x^2)\cdot 2x\).</p>
+</section>
+
+<!-- ============================================ -->
+<section id="evaluar">
+<h2>7. Evaluar \(F(a)\), \(F'(a)\) y recta tangente</h2>
+
+<ol class="steps">
+<li><b>\(F(a)\):</b> reemplaza \(x=a\) en los límites. Si quedan iguales, la integral vale \(0\). Si no, usa Barrow.</li>
+<li><b>\(F'(x)\):</b> TFC generalizado (y producto si hay factor afuera). Recién después reemplaza \(x=a\).</li>
+<li><b>Recta tangente:</b> \(\;y=F(a)+F'(a)\,(x-a)\).</li>
+<li><b>Aproximación afín:</b> \(F(a+h)\approx F(a)+F'(a)\,h\).</li>
+</ol>
+
+<h3>Ejemplo resuelto</h3>
+<p>\(G(x)=(x^2+1)\displaystyle\int_1^{x^2}\frac{t^2+2t+1}{t}\,dt\). Recta tangente en \(x=1\).</p>
+<ul>
+<li>\(G(1)=2\displaystyle\int_1^1(\cdots)\,dt=0\).</li>
+<li>\(G'(x)=2x\displaystyle\int_1^{x^2}(\cdots)\,dt+(x^2+1)\cdot\frac{x^4+2x^2+1}{x^2}\cdot 2x\).</li>
+<li>\(G'(1)=2\cdot 0+2\cdot\dfrac{4}{1}\cdot 2=16\).</li>
+<li>Recta tangente: \(y=0+16(x-1)=16x-16\).</li>
+</ul>
+
+<div class="box ok"><b class="t">Para crecimiento/decrecimiento</b>
+Estudia el signo de \(F'(x)\). Si el integrando es positivo y el límite de arriba es mayor que el de abajo, la integral es positiva: eso suele bastar para decidir el signo sin calcularla.
+</div>
+</section>
+
+<!-- ============================================ -->
+<section id="tvm">
+<h2>8. Valor promedio (TVM para integrales)</h2>
+<div class="box key">
+$$\bar f=\frac{1}{b-a}\int_a^b f(x)\,dx$$
+Si \(f\) es continua en \([a,b]\), existe \(c\in[a,b]\) con \(f(c)=\bar f\). Para encontrar \(c\): resolver \(f(c)=\bar f\) y quedarse con las soluciones que están en el intervalo.
+</div>
+<p>Ejemplo: \(f(x)=\operatorname{sen}x\) en \([0,\pi]\): \(\bar f=\frac1\pi\int_0^\pi\operatorname{sen}x\,dx=\frac2\pi\); los \(c\) son \(\arcsin(2/\pi)\) y \(\pi-\arcsin(2/\pi)\).</p>
+</section>
+
+<!-- ============================================ -->
+<section id="errores">
+<h2>9. Errores frecuentes</h2>
+<div class="box warn">
+<ul>
+<li>\(\int\operatorname{sen}x\,dx=\cos x\) ❌ &nbsp;→&nbsp; es \(-\cos x\) ✔.</li>
+<li>Olvidar dividir por \(a\) en \(\int\cos(ax)\,dx\) o multiplicar por \(u'(x)\) en el TFC.</li>
+<li>\(\int x^{-1}dx=\frac{x^0}{0}\) ❌ &nbsp;→&nbsp; es \(\ln|x|\) ✔.</li>
+<li>Evaluar \(F(b)-F(a)\) sin paréntesis: \(-(-8+\tfrac83)\) se pierde el signo.</li>
+<li>Derivar \(x^3\int\cdots\) sin regla del producto.</li>
+<li>Dejar la \(x\) dentro de la integral cuando la variable es \(t\).</li>
+<li>En \(\int_a^{u(x)}f(t)\,dt\), escribir \(f(x)\) en vez de \(f(u(x))\).</li>
+<li>No justificar: el control pide decir <b>por qué</b> aplica el TFC (integrando continuo) y qué regla se usa.</li>
+</ul>
+</div>
+</section>
+
+<!-- ============================================ -->
+<section id="practica">
+<h2>10. Ejercicios tipo control (con solución)</h2>
+<p class="muted">Intenta cada uno antes de abrir la solución.</p>
+
+<details><summary>P1. \(\displaystyle\int_1^4\left(3\sqrt x-\frac{2}{x^2}\right)dx\)</summary>
+$$\int_1^4\left(3x^{1/2}-2x^{-2}\right)dx=\left(2x^{3/2}+\frac2x\right)\Big|_1^4=(16+\tfrac12)-(2+2)=\frac{25}{2}.$$
+</details>
+
+<details><summary>P2. \(\displaystyle\int_0^{\pi/2}\big(\cos(2x)+\operatorname{sen}x\big)dx\)</summary>
+$$\left(\frac{\operatorname{sen}(2x)}{2}-\cos x\right)\Big|_0^{\pi/2}=(0-0)-(0-1)=1.$$
+</details>
+
+<details><summary>P3. \(\displaystyle\int_0^1 x\,(x^2+1)^2\,dx\)</summary>
+Como \((x^2+1)'=2x\): \(\displaystyle\frac12\int_0^1 2x(x^2+1)^2dx=\frac12\cdot\frac{(x^2+1)^3}{3}\Big|_0^1=\frac{8-1}{6}=\frac76.\)
+</details>
+
+<details><summary>P4. \(\displaystyle\int_{\pi}^{2\pi}\operatorname{sen}(3x-\pi)\,dx\)</summary>
+\(\operatorname{sen}(3x-\pi)=-\operatorname{sen}(3x)\). Primitiva: \(\frac{\cos(3x)}{3}\).
+$$\frac{\cos(6\pi)-\cos(3\pi)}{3}=\frac{1-(-1)}{3}=\frac23.$$
+</details>
+
+<details><summary>P5. Si \(F(x)=\displaystyle\int_2^{x^3}\frac{1}{1+t^2}\,dt\), calcule \(F'(x)\) y \(F'(1)\).</summary>
+El integrando es continuo en \(\mathbb R\) (denominador \(\ge1\)). TFC + cadena con \(u=x^3\):
+$$F'(x)=\frac{1}{1+x^6}\cdot 3x^2,\qquad F'(1)=\frac32.$$
+</details>
+
+<details><summary>P6. Si \(G(x)=\displaystyle\int_{x}^{x^2}\cos(t)\,dt\), calcule \(G(1)\), \(G'(x)\) y \(G'(1)\).</summary>
+\(G(1)=\int_1^1\cos t\,dt=0\). Por TFC generalizado:
+$$G'(x)=\cos(x^2)\cdot 2x-\cos(x)\cdot 1,\qquad G'(1)=2\cos 1-\cos 1=\cos 1.$$
+(Con Barrow también: \(G(x)=\operatorname{sen}(x^2)-\operatorname{sen}x\).)
+</details>
+
+<details><summary>P7. \(H(x)=x^2\displaystyle\int_1^{x}\operatorname{sen}(\pi t)\,dt\). Calcule \(H(1)\), \(H'(1)\) y la recta tangente en \(x=1\).</summary>
+\(H(1)=1\cdot\int_1^1(\cdots)=0\).
+$$H'(x)=2x\int_1^x\operatorname{sen}(\pi t)\,dt+x^2\operatorname{sen}(\pi x)\ \Rightarrow\ H'(1)=0+1\cdot\operatorname{sen}\pi=0.$$
+Recta tangente: \(y=0\) (horizontal).
+</details>
+
+<details><summary>P8. \(F(x)=\displaystyle\int_0^{x^2}\left(\int_0^{t}(3u^2+1)\,du\right)dt\). Calcule \(F(1)\) y \(F'(1)\).</summary>
+Interior por Barrow: \(h(t)=\int_0^t(3u^2+1)du=t^3+t\).
+<br>\(F(1)=\int_0^1(t^3+t)\,dt=\frac14+\frac12=\frac34\).
+<br>TFC: \(F'(x)=h(x^2)\cdot 2x=(x^6+x^2)\,2x\), así que \(F'(1)=2\cdot 2=4\).
+</details>
+
+<details><summary>P9. Si \(g(x)=\displaystyle\int_0^x(x-t)\,f(t)\,dt\) con \(f\) continua, muestre que \(g''(x)=f(x)\).</summary>
+Separando: \(g(x)=x\int_0^x f(t)\,dt-\int_0^x t f(t)\,dt\).
+<br>\(g'(x)=\int_0^x f(t)\,dt+x f(x)-x f(x)=\int_0^x f(t)\,dt\).
+<br>\(g''(x)=f(x)\). ∎
+</details>
+</section>
+
+<footer>
+Material de apoyo para el Control 4 · Matemáticas 2 · 2do semestre 2026. Complementa las pautas de la Guía 3 y la Guía 3,5.
+</footer>
+
+</div>
+</body>
+</html>
